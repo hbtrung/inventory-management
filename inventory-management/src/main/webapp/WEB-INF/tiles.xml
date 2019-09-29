@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC 
+	"-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" 
+	"http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+	<definition name="master" template="/WEB-INF/views/layout/master-layout.jsp">
+		<put-attribute name="sidebar" value="/WEB-INF/views/layout/sidebar.jsp"></put-attribute>
+		<put-attribute name="top-nav" value="/WEB-INF/views/layout/top-nav.jsp"></put-attribute>
+		<put-attribute name="body" value="/WEB-INF/views/layout/body.jsp"></put-attribute>
+		<put-attribute name="footer" value="/WEB-INF/views/layout/footer.jsp"></put-attribute>
+	</definition>
+	<definition name="index" extends="master">
+		<put-attribute name="body" value="/WEB-INF/views/index.jsp"></put-attribute>
+	</definition>
+	<definition name="category-action" extends="master">
+		<put-attribute name="body" value="/WEB-INF/views/category/category-action.jsp"></put-attribute>
+	</definition>
+	<definition name="category-list" extends="master">
+		<put-attribute name="body" value="/WEB-INF/views/category/category-list.jsp"></put-attribute>
+	</definition>
+	<definition name="productInfo-action" extends="master">
+		<put-attribute name="body" value="/WEB-INF/views/product-info/productInfo-action.jsp"></put-attribute>
+	</definition>
+	<definition name="productInfo-list" extends="master">
+		<put-attribute name="body" value="/WEB-INF/views/product-info/productInfo-list.jsp"></put-attribute>
+	</definition>
+	<definition name="product-in-stock" extends="master">
+		<put-attribute name="body" value="/WEB-INF/views/product-in-stock/product-in-stock.jsp"></put-attribute>
+	</definition>
+	<definition name="history" extends="master">
+		<put-attribute name="body" value="/WEB-INF/views/history/history.jsp"></put-attribute>
+	</definition>
+	<definition name="goods-receipt-action" extends="master">
+		<put-attribute name="body" value="/WEB-INF/views/invoice/goods-receipt-action.jsp"></put-attribute>
+	</definition>
+	<definition name="goods-receipt-list" extends="master">
+		<put-attribute name="body" value="/WEB-INF/views/invoice/goods-receipt-list.jsp"></put-attribute>
+	</definition>
+	<definition name="goods-issue-action" extends="master">
+		<put-attribute name="body" value="/WEB-INF/views/invoice/goods-issue-action.jsp"></put-attribute>
+	</definition>
+	<definition name="goods-issue-list" extends="master">
+		<put-attribute name="body" value="/WEB-INF/views/invoice/goods-issue-list.jsp"></put-attribute>
+	</definition>
+	<definition name="user-action" extends="master">
+		<put-attribute name="body" value="/WEB-INF/views/user/user-action.jsp"></put-attribute>
+	</definition>
+	<definition name="user-list" extends="master">
+		<put-attribute name="body" value="/WEB-INF/views/user/user-list.jsp"></put-attribute>
+	</definition>
+	<definition name="role-action" extends="master">
+		<put-attribute name="body" value="/WEB-INF/views/role/role-action.jsp"></put-attribute>
+	</definition>
+	<definition name="role-list" extends="master">
+		<put-attribute name="body" value="/WEB-INF/views/role/role-list.jsp"></put-attribute>
+	</definition>
+	<definition name="menu-list" extends="master">
+		<put-attribute name="body" value="/WEB-INF/views/menu/menu-list.jsp"></put-attribute>
+	</definition>
+	<definition name="menu-permission" extends="master">
+		<put-attribute name="body" value="/WEB-INF/views/menu/menu-permission.jsp"></put-attribute>
+	</definition>
+</tiles-definitions>

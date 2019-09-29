@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+		
+	<!-- Add support for component scanning -->
+	<context:component-scan base-package="inventory"></context:component-scan>
+	
+	<!-- Add support for conversion, formatting and validation support -->
+	<mvc:annotation-driven></mvc:annotation-driven>
+	
+	<!-- resource mapping -->
+	<mvc:resources location="/static/" mapping="/resources/**" cache-period="0"></mvc:resources>
+	<mvc:resources location="file:${upload.servlet.location}" mapping="/upload/**" cache-period="0"></mvc:resources>
+	
+	<!-- Define Spring MVC view resolver -->
+	<bean 
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="order" value="1" />
+		<property name="prefix">
+			<value>/WEB-INF/views/</value>
+		</property>
+		<property name="suffix">
+			<value>.jsp</value>
+		</property>
+	</bean>
+	
+	<!-- Define Database DataSource / connection pool -->
+	<bean 
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:jdbc.properties</value>
+				<value>classpath:config.properties</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="dataSource" 
+		class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="${jdbc.driverClassName}" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+	</bean>
+	
+	<!-- Setup Hibernate session factory -->
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="hibernateProperties" value="classpath:hibernate.properties" />
+		<property name="mappingResources">
+			<list>
+				<value>inventory/model/mapping/Users.hbm.xml</value>
+				<value>inventory/model/mapping/Role.hbm.xml</value>
+				<value>inventory/model/mapping/UserRole.hbm.xml</value>
+				<value>inventory/model/mapping/Menu.hbm.xml</value>
+				<value>inventory/model/mapping/Auth.hbm.xml</value>
+				<value>inventory/model/mapping/Category.hbm.xml</value>
+				<value>inventory/model/mapping/ProductInfo.hbm.xml</value>
+				<value>inventory/model/mapping/ProductInStock.hbm.xml</value>
+				<value>inventory/model/mapping/History.hbm.xml</value>
+				<value>inventory/model/mapping/Invoice.hbm.xml</value>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- Setup Hibernate transaction manager -->
+	<bean id="myTransactionManager"
+            class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    
+    <!-- Enable configuration of transactional behavior based on annotations -->
+	<tx:annotation-driven transaction-manager="myTransactionManager" />
+	
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+		<property name="order" value="0"></property>
+		<property name="viewClass" value="org.springframework.web.servlet.view.tiles3.TilesView">
+			
+		</property>
+	</bean>
+	
+	<bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
+		<property name="definitions">
+			<value>/WEB-INF/tiles.xml</value>
+		</property>
+	</bean>
+	
+	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="basename" value="/message/message"></property>
+	</bean>
+	
+	<bean id="multipartResolver" 
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize" value="268435456" />	
+	</bean>
+	
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/**"/>
+			<mvc:exclude-mapping path="/login"/>
+			<mvc:exclude-mapping path="/processLogin"/>
+			<mvc:exclude-mapping path="/register"/>
+			<mvc:exclude-mapping path="/processRegister"/>
+			<mvc:exclude-mapping path="/resources/**"/>
+			<mvc:exclude-mapping path="/upload/**"/>
+			<bean class="inventory.security.FilterSystem"></bean>
+		</mvc:interceptor>
+	</mvc:interceptors>
+</beans>
